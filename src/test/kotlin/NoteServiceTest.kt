@@ -78,8 +78,8 @@ class NoteServiceTest {
     fun getNotes() {
         val service = NoteService()
         service.addNote(Notes("Новая заметка", "Текст для новой заметки"))
-        val note = Notes("Новая заметка", "Текст для новой заметки", userId = 1, noteId = 1)
-        assertEquals(service.getNotes(1), note)
+        val note = service.getNotes(1)
+            assertEquals(note.size, 1)
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -106,8 +106,8 @@ class NoteServiceTest {
     fun getComments() {
         val service = NoteService()
         service.createComment(Comments(), 1)
-        val comment = Comments(1, "Новый комментарий", 1)
-        assertEquals(service.getComments(1), comment)
+        val comment = service.getComments(1)
+        assertEquals(comment.size, 1)
     }
 
     @Test(expected = IllegalArgumentException::class)

@@ -49,11 +49,11 @@ class NoteService {
     }
 
     fun deleteNote(noteId: Int): Boolean {
-        val noteToDelete = notes.find { it.noteId == noteId } ?: throw IllegalArgumentException("Заметка не найдена")
+        notes.find { it.noteId == noteId } ?: throw IllegalArgumentException("Заметка не найдена")
         if (comments.find { it.noteId == noteId } != null) {
-            comments.remove(comments.find { it.noteId == noteId })
+                comments.removeAll(comments.filter{ it.noteId == noteId })
         }
-        notes.remove(noteToDelete)
+        notes.remove(notes.find { it.noteId == noteId })
         return true
     }
 
@@ -83,17 +83,18 @@ class NoteService {
         return true
     }
 
-    fun getNotes(userId: Int): Notes {
-        val notesToGet = notes.find { it.userId == userId } ?: throw IllegalArgumentException("Пользователь не найден")
-        return notes[notes.indexOf(notesToGet)]
+    fun getNotes(userId: Int): List<Notes> {
+        notes.find { it.userId == userId } ?: throw IllegalArgumentException("Пользователь не найден")
+        return notes.filter { it.userId == userId }
     }
 
     fun getNote(noteId: Int): Notes {
-        return notes.find { it.noteId == noteId } ?: throw IllegalArgumentException("Пользователь не найден")
+        return notes.find { it.noteId == noteId } ?: throw IllegalArgumentException("Заметка не найдена")
     }
 
-    fun getComments(noteId: Int): Comments {
-        return comments.find { it.noteId == noteId } ?: throw IllegalArgumentException("Комментарий не найден")
+    fun getComments(noteId: Int): List<Comments> {
+        comments.find { it.noteId == noteId } ?: throw IllegalArgumentException("Комментарий не найден")
+        return comments.filter { it.noteId == noteId }
     }
 
     fun restoreComments(noteId: Int): Boolean {
